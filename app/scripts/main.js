@@ -25,7 +25,9 @@ require.config({
 
 require([
     'backbone',
-    'gmaps'
-], function (Backbone, gmaps) {
+    'views/app'
+], function (Backbone, AppView) {
+    var App = new AppView;
+
     Backbone.history.start();
 });
