@@ -4,6 +4,7 @@ var lrSnippet = require('connect-livereload')({port: LIVERELOAD_PORT});
 var mountFolder = function (connect, dir) {
     return connect.static(require('path').resolve(dir));
 };
+var sp2010rest = require('sp2010-rest');
 
 // # Globbing
 // for performance reasons we're only matching one level down:
@@ -21,7 +22,8 @@ module.exports = function (grunt) {
     // configurable paths
     var yeomanConfig = {
         app: 'app',
-        dist: 'dist'
+        dist: 'dist',
+        sp: '/Volumes/theloop.gov.bc.ca/rsd/SitePages/officemap'
     };
 
     grunt.initConfig({
@@ -72,6 +74,7 @@ module.exports = function (grunt) {
                     middleware: function (connect) {
                         return [
                             lrSnippet,
+                            sp2010rest(connect, 'lists'),
                             mountFolder(connect, '.tmp'),
                             mountFolder(connect, yeomanConfig.app)
                         ];
@@ -256,6 +259,15 @@ module.exports = function (grunt) {
                         'images/{,*/}*.{webp,gif}',
                         'styles/fonts/{,*/}*.*'
                     ]
+                }]
+            },
+            sp: {
+                files: [{
+                    expand: true,
+                    dot: true,
+                    cwd: '<%= yeoman.dist %>',
+                    dest: '<%= yeoman.sp %>',
+                    src: ['**']
                 }]
             }
         },

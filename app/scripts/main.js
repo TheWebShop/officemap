@@ -18,9 +18,10 @@ require.config({
         jquery: '../bower_components/jquery/jquery',
         backbone: '../bower_components/backbone/backbone',
         underscore: '../bower_components/underscore/underscore',
-        async: '../bower_components/requirejs-plugins/src/async'
+        async: '../bower_components/requirejs-plugins/src/async',
+        'backbone.sharepoint': '../bower_components/backbone.sharepoint/backbone-sharepoint.amd'
     },
-    waitSeconds : 120 //make sure it is enough to load all gmaps scripts
+    waitSeconds: 120 //make sure it is enough to load all gmaps scripts
 });
 
 require([
