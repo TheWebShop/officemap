@@ -15,6 +15,10 @@ define([
 
         $el: $("#office-list"),
 
+        events: {
+            'click .office': 'focusOffice'
+        },
+
         initialize: function(options) {
             _.extend(this, options);
             _.bindAll(this, 'render');
@@ -22,6 +26,14 @@ define([
 
         render: function() {
             $(this.el).html(this.template({offices:  this.offices.toJSON()}));
+        },
+
+        focusOffice: function(e){
+            var $target = $(e.target);
+            var id = $target.data('officelist-id');
+            var office = this.offices.get(id);
+
+            new google.maps.event.trigger(office.marker, 'click');
         }
     });
 

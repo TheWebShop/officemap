@@ -52,10 +52,13 @@ define([
                 office: office
             });
 
+            office.marker = marker;
+
             google.maps.event.addListener(marker, 'click', function() {
                 mapView.showOfficePopup(this);
             });
         },
+
         showOfficePopup: function(marker) {
             this.popup = new OfficePopup({model: marker.office});
             this.infowindow.setContent(this.popup.render().el);
