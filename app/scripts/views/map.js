@@ -4,8 +4,9 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'gmaps'
-], function ($, _, Backbone, gmaps) {
+    'gmaps',
+    'views/OfficePopup'
+], function ($, _, Backbone, gmaps, OfficePopup) {
     'use strict';
 
     var MapView = Backbone.View.extend({
@@ -36,17 +37,29 @@ define([
 
         initialize: function(options) {
             this.map = new google.maps.Map(this.el, this.mapOptions);
+            this.infowindow = new google.maps.InfoWindow({
+                maxWidth: 300
+            });
 
             _.bindAll(this, 'addOfficeMarker');
         },
 
         addOfficeMarker: function(office) {
+            var mapView = this;
             var marker = new google.maps.Marker({
                 position: new google.maps.LatLng(office.get('Latitude'), office.get('Longitude')),
                 map: this.map,
-                //icon: office.icon,
                 office: office
             });
+
+            google.maps.event.addListener(marker, 'click', function() {
+                mapView.showOfficePopup(this);
+            });
+        },
+        showOfficePopup: function(marker) {
+            this.popup = new OfficePopup({model: marker.office});
+            this.infowindow.setContent(this.popup.render().el);
+            this.infowindow.open(this.map, marker);
         }
     });
 
