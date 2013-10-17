@@ -31,13 +31,22 @@ define([
             zoomControlOptions: {
                 style: google.maps.ZoomControlStyle.LARGE,
                 position: google.maps.ControlPosition.RIGHT_TOP
-            },
+            }
         },
 
-        render: function() {
+        initialize: function(options) {
             this.map = new google.maps.Map(this.el, this.mapOptions);
 
-            return this.$el
+            _.bindAll(this, 'addOfficeMarker');
+        },
+
+        addOfficeMarker: function(office) {
+            var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(office.get('Latitude'), office.get('Longitude')),
+                map: this.map,
+                //icon: office.icon,
+                office: office
+            });
         }
     });
 

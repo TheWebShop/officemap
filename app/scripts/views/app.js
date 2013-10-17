@@ -16,13 +16,15 @@ define([
         $el: $("#app"),
 
         initialize: function() {
-            this.gmap = new MapView;
+            this.gmap = new MapView();
             this.offices = new OfficelistCollection();
-            this.offices.fetch({
-                orderby: 'Office asc'
-            });
 
-            this.$el.append(this.gmap.render());
+            this.offices
+                .on('add', this.gmap.addOfficeMarker)
+                .fetch({
+                    orderby: 'Office asc',
+                    remove: false
+                });
         }
     });
 
