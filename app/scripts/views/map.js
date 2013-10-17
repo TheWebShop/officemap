@@ -42,7 +42,7 @@ define([
 
         initialize: function(options) {
             var mapView = this;
-            _.bindAll(this, 'addOfficeMarker', 'zoom');
+            _.bindAll(this, 'addOfficeMarker', 'zoom', 'home');
 
             this.map = new google.maps.Map(this.el, this.mapOptions);
             this.infowindow = new google.maps.InfoWindow({
@@ -54,9 +54,17 @@ define([
                 text: 'Offices'
             });
             this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(leftPanelControl.el);
-
             google.maps.event.addDomListener(leftPanelControl.el, 'click', function() {
                 vent.trigger('toggle:leftPanel');
+            });
+
+            var homeMapControl = new MapcontrolView({
+                title: 'Click to zoom out',
+                text: 'Home'
+            });
+            this.map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(homeMapControl.el);
+            google.maps.event.addDomListener(homeMapControl.el, 'click', function() {
+                vent.trigger('home');
             });
         },
 
@@ -84,6 +92,11 @@ define([
         zoom: function(position, zoom) {
             this.map.setCenter(position);
             this.map.setZoom(15);
+        },
+
+        home: function() {
+            this.map.setCenter(this.mapOptions.center);
+            this.map.setZoom(this.mapOptions.zoom);
         }
     });
 

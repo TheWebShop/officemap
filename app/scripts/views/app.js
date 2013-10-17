@@ -36,6 +36,7 @@ define([
                 });
 
             vent.on({
+                'home': this.gmap.home,
                 'toggle:leftPanel': this.toggleLeftPanel,
                 'zoom': this.gmap.zoom
             });
