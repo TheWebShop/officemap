@@ -4,6 +4,14 @@ html, body, #app, #map {
     padding: 0;
 }
 
+#left-panel {
+    position: absolute;
+    z-index: 1;
+    width: 0;
+    background: white;
+    width: 300px;
+}
+
 .gmap-popup ul {
     list-style: none;
 }
