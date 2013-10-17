@@ -4,10 +4,12 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    'templates',
     'gmaps',
     'views/OfficePopup',
+    'views/mapControl',
     'vent'
-], function ($, _, Backbone, gmaps, OfficePopup, vent) {
+], function ($, _, Backbone, JST, gmaps, OfficePopup, MapcontrolView, vent) {
     'use strict';
 
     var MapView = Backbone.View.extend({
@@ -36,6 +38,8 @@ define([
             }
         },
 
+        controlTemplate: JST['app/scripts/templates/mapControl.ejs'],
+
         initialize: function(options) {
             var mapView = this;
             _.bindAll(this, 'addOfficeMarker', 'zoom');
@@ -45,33 +49,15 @@ define([
                 maxWidth: 300
             });
 
-            var HomeControl = function(controlDiv, map) {
+            var leftPanelControl = new MapcontrolView({
+                title: 'Click to set show/hide office list',
+                text: 'Offices'
+            });
+            this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(leftPanelControl.el);
 
-                // Set CSS styles for the DIV containing the control
-                // Setting padding to 5 px will offset the control
-                // from the edge of the map
-                controlDiv.style.margin = '5px';
-
-                var controlUI = $('<div class="control" title="Click to set show/hide office list">')[0];
-                controlDiv.appendChild(controlUI);
-
-                var controlText = $('<div class="control-button">Offices</div>')[0];
-                controlUI.appendChild(controlText);
-
-                google.maps.event.addDomListener(controlUI, 'click', function() {
-                    vent.trigger('toggle:leftPanel');
-                });
-
-            }
-
-            // Create the DIV to hold the control and
-            // call the HomeControl() constructor passing
-            // in this DIV.
-            var homeControlDiv = document.createElement('div');
-            var homeControl = new HomeControl(homeControlDiv, this.map);
-
-            homeControlDiv.index = 1;
-            this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(homeControlDiv);
+            google.maps.event.addDomListener(leftPanelControl.el, 'click', function() {
+                vent.trigger('toggle:leftPanel');
+            });
         },
 
         addOfficeMarker: function(office) {
