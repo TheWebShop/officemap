@@ -4,8 +4,9 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'templates'
-], function ($, _, Backbone, JST) {
+    'templates',
+    'vent'
+], function ($, _, Backbone, JST, vent) {
     'use strict';
 
     var OfficeListView = Backbone.View.extend({
@@ -34,6 +35,7 @@ define([
             var office = this.offices.get(id);
 
             new google.maps.event.trigger(office.marker, 'click');
+            vent.trigger('toggle:leftPanel');
         }
     });
 

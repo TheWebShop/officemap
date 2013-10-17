@@ -38,7 +38,7 @@ define([
 
         initialize: function(options) {
             var mapView = this;
-            _.bindAll(this, 'addOfficeMarker');
+            _.bindAll(this, 'addOfficeMarker', 'zoom');
 
             this.map = new google.maps.Map(this.el, this.mapOptions);
             this.infowindow = new google.maps.InfoWindow({
@@ -86,7 +86,6 @@ define([
 
             google.maps.event.addListener(marker, 'click', function() {
                 mapView.showOfficePopup(this);
-                vent.trigger('toggle:leftPanel');
             });
         },
 
@@ -94,6 +93,11 @@ define([
             this.popup = new OfficePopup({model: marker.office});
             this.infowindow.setContent(this.popup.render().el);
             this.infowindow.open(this.map, marker);
+        },
+
+        zoom: function(position, zoom) {
+            this.map.setCenter(position);
+            this.map.setZoom(15);
         }
     });
 
