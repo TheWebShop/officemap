@@ -6,8 +6,9 @@ define([
     'backbone',
     'views/map',
     'collections/officeList',
-    'views/officeList'
-], function ($, _, Backbone, MapView, OfficelistCollection, OfficeListView) {
+    'views/officeList',
+    'vent'
+], function ($, _, Backbone, MapView, OfficelistCollection, OfficeListView, vent) {
     'use strict';
 
     var AppView = Backbone.View.extend({
@@ -33,7 +34,16 @@ define([
                 .done(function() {
                     appView.officeList.render();
                 });
+
+            vent.on({
+                'toggle:leftPanel': this.toggleLeftPanel
+            });
+        },
+
+        toggleLeftPanel: function() {
+            $('#map').toggleClass('ajar');
         }
+
     });
 
     return AppView;
