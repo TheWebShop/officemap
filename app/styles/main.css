@@ -38,19 +38,25 @@ html, body {
     padding: 0;
 }
 
+#map-container {
+    width: 100%;
+    height: 100%;
+    right: 0;
+    position: absolute;
+    -webkit-transition: width 0.1s ease-in-out;
+}
+#map-container.pushed {
+    width: 75%;
+}
+
 #map {
     width: 100%;
     height: 100%;
-    position: absolute;
-    right: 0;
     border: 1px solid #D9D9D9;
     background: #E5E3DF;
     overflow: hidden;
-    -webkit-transition: width 0.1s ease-in-out;
 }
-#map.pushed {
-    width: 75%;
-}
+
 .map .control-container {
     margin: 5px;
 }
@@ -73,6 +79,21 @@ html, body {
 .map .control-button:hover {
     background-color: rgb(235, 235, 235);
     color: black;
+}
+
+.shadow-top, .shadow-right, .shadow-left, .shadow-bottom {
+    position: absolute;
+    z-index:50;
+}
+.shadow-top {
+    width: 100%;
+    height: 5px;
+    background: -webkit-linear-gradient(top,rgba(153,153,153,0.5), rgba(0,0,0,0));
+}
+.shadow-left {
+    width: 5px;
+    height: 100%;
+    background: -webkit-linear-gradient(left,rgba(153,153,153,0.5), rgba(0,0,0,0));
 }
 
 .gmap-popup ul {

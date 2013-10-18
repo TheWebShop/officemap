@@ -50,7 +50,7 @@ define([
 
         toggleLeftPanel: function() {
             $('#left-panel').toggleClass('open');
-            $('#map').toggleClass('pushed');
+            $('#map-container').toggleClass('pushed');
         },
 
         resizePage: function() {
