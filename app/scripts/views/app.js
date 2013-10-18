@@ -7,8 +7,9 @@ define([
     'views/map',
     'collections/officeList',
     'views/officeList',
+    'views/search',
     'vent'
-], function ($, _, Backbone, MapView, OfficelistCollection, OfficeListView, vent) {
+], function ($, _, Backbone, MapView, OfficelistCollection, OfficeListView, SearchView, vent) {
     'use strict';
 
     var AppView = Backbone.View.extend({
@@ -28,6 +29,9 @@ define([
             this.officeList = new OfficeListView({
                 offices: this.offices
             });
+            this.search = new SearchView({
+                offices: this.offices
+            });
 
             this.offices
                 .on('add', this.gmap.addOfficeMarker)
@@ -37,6 +41,7 @@ define([
                 })
                 .done(function() {
                     appView.officeList.render();
+                    appView.search.render();
                 });
 
             vent.on({
