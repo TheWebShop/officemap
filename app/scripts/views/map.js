@@ -22,19 +22,14 @@ define([
             center: new google.maps.LatLng(53.7266683, -127.64762059999998),
             zoom: 6,
             mapTypeId: google.maps.MapTypeId.ROADMAP,
-            mapTypeControl: true,
-            mapTypeControlOptions: {
-                style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-                position: google.maps.ControlPosition.TOP_CENTER
-            },
             panControl: true,
             panControlOptions: {
-                position: google.maps.ControlPosition.TOP_RIGHT
+                position: google.maps.ControlPosition.LEFT_TOP
             },
             zoomControl: true,
             zoomControlOptions: {
                 style: google.maps.ZoomControlStyle.LARGE,
-                position: google.maps.ControlPosition.RIGHT_TOP
+                position: google.maps.ControlPosition.LEFT_TOP
             }
         },
 
@@ -50,8 +45,9 @@ define([
             });
 
             var leftPanelControl = new MapcontrolView({
-                title: 'Click to set show/hide office list',
-                text: 'Offices'
+                title: 'Show Panel',
+                text: 'Show Panel',
+                className: 'expand-left'
             });
             this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(leftPanelControl.el);
             google.maps.event.addDomListener(leftPanelControl.el, 'click', function() {
@@ -60,11 +56,16 @@ define([
 
             var homeMapControl = new MapcontrolView({
                 title: 'Click to zoom out',
-                text: 'Home'
+                text: 'Home',
+                className: 'home'
             });
-            this.map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(homeMapControl.el);
+            this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(homeMapControl.el);
             google.maps.event.addDomListener(homeMapControl.el, 'click', function() {
                 vent.trigger('home');
+            });
+
+            vent.on('resize', function() {
+                google.maps.event.trigger(this.map, 'resize');
             });
         },
 

@@ -51,6 +51,7 @@ define([
         toggleLeftPanel: function() {
             $('#left-panel').toggleClass('open');
             $('#map-container').toggleClass('pushed');
+            vent.trigger('resize');
         },
 
         resizePage: function() {
