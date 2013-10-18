@@ -13,12 +13,16 @@ define([
 
     var AppView = Backbone.View.extend({
 
-        el: $("#app")[0],
+        el: $("body")[0],
 
-        $el: $("#app"),
+        $el: $("body"),
 
         initialize: function() {
             var appView = this;
+
+            this.resizePage();
+            $(window).on('resize', this.resizePage);
+
             this.gmap = new MapView();
             this.offices = new OfficelistCollection();
             this.officeList = new OfficeListView({
@@ -40,10 +44,18 @@ define([
                 'toggle:leftPanel': this.toggleLeftPanel,
                 'zoom': this.gmap.zoom
             });
+
+            _.bindAll(this, 'resizePage');
         },
 
         toggleLeftPanel: function() {
-            $('#map').toggleClass('ajar');
+            $('#left-panel').toggleClass('open');
+            $('#map').toggleClass('pushed');
+        },
+
+        resizePage: function() {
+            var height = $(window).height() - $('#top-nav').height();
+            $('#page').height(height);
         }
 
     });

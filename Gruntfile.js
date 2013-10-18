@@ -353,7 +353,7 @@ module.exports = function (grunt) {
         'concat',
         'cssmin',
         'uglify',
-        'copy',
+        'copy:dist',
         'rev',
         'usemin'
     ]);
