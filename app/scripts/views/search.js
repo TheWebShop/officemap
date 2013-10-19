@@ -6,8 +6,9 @@ define([
     'backbone',
     'templates',
     'ejs',
+    'vent',
     'typeahead'
-], function ($, _, Backbone, JST, EJS) {
+], function ($, _, Backbone, JST, EJS, vent) {
     'use strict';
 
     var SearchView = Backbone.View.extend({
@@ -32,7 +33,8 @@ define([
                     value: Name + Office + Serving,
                     Name: Name,
                     Office: Office,
-                    Serving: Serving
+                    Serving: Serving,
+                    model: office
                 };
             });
 
@@ -41,6 +43,9 @@ define([
                 local: offices,
                 template: this.template(),
                 engine: EJS
+            })
+            .on('typeahead:selected', function(e, selection) {
+                vent.trigger('focus:office', selection.model);
             });
         }
     });

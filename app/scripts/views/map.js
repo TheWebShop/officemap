@@ -98,6 +98,10 @@ define([
         home: function() {
             this.map.setCenter(this.mapOptions.center);
             this.map.setZoom(this.mapOptions.zoom);
+        },
+
+        focusOffice: function(office){
+            new gmaps.event.trigger(office.marker, 'click');
         }
     });
 

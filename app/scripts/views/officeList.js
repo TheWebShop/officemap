@@ -34,7 +34,7 @@ define([
             var id = $target.data('officelist-id');
             var office = this.offices.get(id);
 
-            new google.maps.event.trigger(office.marker, 'click');
+            vent.trigger('focus:office', office);
             vent.trigger('toggle:leftPanel');
         }
     });

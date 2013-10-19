@@ -45,6 +45,7 @@ define([
                 });
 
             vent.on({
+                'focus:office': this.gmap.focusOffice,
                 'home': this.gmap.home,
                 'toggle:leftPanel': this.toggleLeftPanel,
                 'zoom': this.gmap.zoom
