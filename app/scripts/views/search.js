@@ -12,9 +12,9 @@ define([
 
     var SearchView = Backbone.View.extend({
 
-        el: $("#map-search")[0],
+        el: $("#search-map")[0],
 
-        $el: $("#map-search"),
+        $el: $("#search-map"),
 
         template: JST['app/scripts/templates/search.ejs'],
 
@@ -36,7 +36,7 @@ define([
                 };
             });
 
-            this.$el.typeahead({
+            $('#search-input').typeahead({
                 name: 'offices',
                 local: offices,
                 template: this.template(),
