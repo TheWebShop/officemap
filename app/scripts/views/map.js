@@ -41,7 +41,7 @@ define([
 
         initialize: function(options) {
             var mapView = this;
-            _.bindAll(this, 'addOfficeMarker', 'zoom', 'home');
+            _.bindAll(this, 'addOfficeMarker', 'addGeoMarker', 'zoom', 'home', 'mapGeolocations');
 
             this.map = new google.maps.Map(this.el, this.mapOptions);
             this.infowindow = new google.maps.InfoWindow({
@@ -90,6 +90,26 @@ define([
             });
         },
 
+        addGeoMarker: function(geolocation) {
+            var location = geolocation.get('geometry').location
+            var mapView = this;
+            var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(location.lb, location.mb),
+                map: this.map,
+                geolocation: geolocation
+            });
+
+            geolocation.marker = marker;
+
+            google.maps.event.addListener(marker, 'click', function() {
+                mapView.showOfficePopup(this);
+            });
+        },
+
+        mapGeolocations: function(geolocations) {
+            _.each(geolocations.models, this.addGeoMarker);
+        },
+
         showOfficePopup: function(marker) {
             this.popup = new OfficePopup({model: marker.office});
             this.infowindow.setContent(this.popup.render().el);
@@ -108,6 +128,10 @@ define([
 
         focusOffice: function(office){
             new gmaps.event.trigger(office.marker, 'click');
+        },
+
+        focusGeolocation: function(geolocation){
+            new gmaps.event.trigger(geolocation.marker, 'click');
         }
     });
 

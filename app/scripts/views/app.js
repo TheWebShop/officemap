@@ -55,15 +55,25 @@ define([
                     appView.search.render();
                 });
 
-            this.geolocations.on('reset', this.showGeolocations);
+            this.geolocations.on('reset', this.showGeolocations)
+            this.geolocations.on('reset', this.gmap.mapGeolocations)
 
             vent.on({
                 'focus:office': this.gmap.focusOffice,
                 'home': this.gmap.home,
+                'open:leftPanel': this.openLeftPanel,
                 'toggle:leftPanel': this.toggleLeftPanel,
                 'zoom': this.gmap.zoom,
-                'geolocate': _.bind(this.geolocate, this)
+                'geolocate': _.bind(this.geolocate, this),
+                'show:offices': this.showOffices(),
+                'show:geolocations': this.showGeolocations()
             });
+        },
+
+        openLeftPanel: function() {
+            $('#left-panel').addClass('open');
+            $('#map-container').addClass('pushed');
+            vent.trigger('resize');
         },
 
         toggleLeftPanel: function() {

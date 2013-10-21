@@ -58,6 +58,7 @@ define([
         geolocate: function(e) {
             e.preventDefault();
             vent.trigger('geolocate', this.$input.val());
+            vent.trigger('open:leftPanel');
         },
 
         focusOffice: function(e, selection) {

@@ -40,7 +40,6 @@ define([
             var office = this.offices.get(id);
 
             vent.trigger('focus:office', office);
-            vent.trigger('toggle:leftPanel');
         }
     });
 

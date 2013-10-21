@@ -24,10 +24,11 @@ define([
         initialize: function(options) {
             _.extend(this, options);
             _.bindAll(this, 'render');
+
+            this.geolocations.on('reset', this.render);
         },
 
         render: function() {
-            console.log(this)
             this.$el.html(this.template({geolocations:  this.geolocations.toJSON()}))
                 .fadeIn();
         },
@@ -38,14 +39,10 @@ define([
 
         focusGeolocation: function(e){
             var $target = $(e.target);
-            console.log($target)
-            /*
-            var id = $target.data('officelist-id');
-            var office = this.offices.get(id);
+            var index = $target.data('geolocationlist-index');
+            var geolocation = this.geolocations.models[index];
 
             vent.trigger('focus:geolocation', geolocation);
-            vent.trigger('toggle:leftPanel');
-            */
         }
     });
 
