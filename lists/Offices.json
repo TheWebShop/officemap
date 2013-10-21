@@ -4560,55 +4560,6 @@
             },
             {
                 "__metadata": {
-                    "uri": "https://theloop.gov.bc.ca/rsd/_vti_bin/ListData.svc/Offices(154)",
-                    "etag": "W/\"3\"",
-                    "type": "Microsoft.SharePoint.DataService.OfficesItem"
-                },
-                "ContentTypeID": "0x01003747B684637BFA46ABC2C8A4805F37F6",
-                "Name": "Vancouver - FMP",
-                "Office": null,
-                "Address": null,
-                "City": "Vancouver",
-                "ZIPPostalCode": null,
-                "Region": {
-                    "__deferred": {
-                        "uri": "https://theloop.gov.bc.ca/rsd/_vti_bin/ListData.svc/Offices(154)/Region"
-                    }
-                },
-                "RegionValue": "2",
-                "Latitude": null,
-                "Longitude": null,
-                "Website": "https://theloop.gov.bc.ca/RSD/Region2/Pages/office-FMP.aspx, Vancouver  - FMP",
-                "Serving": "Region 2",
-                "Description": null,
-                "BusinessPhone": "(250) 867-3509",
-                "Id": 154,
-                "ContentType": "Item",
-                "Modified": "/Date(1375883703000)/",
-                "Created": "/Date(1374570800000)/",
-                "CreatedBy": {
-                    "__deferred": {
-                        "uri": "https://theloop.gov.bc.ca/rsd/_vti_bin/ListData.svc/Offices(154)/CreatedBy"
-                    }
-                },
-                "CreatedById": 436,
-                "ModifiedBy": {
-                    "__deferred": {
-                        "uri": "https://theloop.gov.bc.ca/rsd/_vti_bin/ListData.svc/Offices(154)/ModifiedBy"
-                    }
-                },
-                "ModifiedById": 34,
-                "Owshiddenversion": 3,
-                "Version": "1.0",
-                "Attachments": {
-                    "__deferred": {
-                        "uri": "https://theloop.gov.bc.ca/rsd/_vti_bin/ListData.svc/Offices(154)/Attachments"
-                    }
-                },
-                "Path": "/rsd/Lists/Offices"
-            },
-            {
-                "__metadata": {
                     "uri": "https://theloop.gov.bc.ca/rsd/_vti_bin/ListData.svc/Offices(155)",
                     "etag": "W/\"6\"",
                     "type": "Microsoft.SharePoint.DataService.OfficesItem"
