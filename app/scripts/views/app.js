@@ -4,12 +4,13 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    'nprogress',
     'views/map',
     'collections/officeList',
     'views/officeList',
     'views/search',
     'vent'
-], function ($, _, Backbone, MapView, OfficelistCollection, OfficeListView, SearchView, vent) {
+], function ($, _, Backbone, NProgress, MapView, OfficelistCollection, OfficeListView, SearchView, vent) {
     'use strict';
 
     var AppView = Backbone.View.extend({
@@ -19,6 +20,7 @@ define([
         $el: $("body"),
 
         initialize: function() {
+            NProgress.start();
             var appView = this;
 
             this.resizePage();
@@ -42,6 +44,7 @@ define([
                 .done(function() {
                     appView.officeList.render();
                     appView.search.render();
+                    NProgress.done();
                 });
 
             vent.on({

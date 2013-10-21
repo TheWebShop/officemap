@@ -10,7 +10,8 @@
     "modernizr": "~2.6.2",
     "requirejs-plugins": "~1.0.2",
     "backbone.sharepoint": "*",
-    "typeahead.js": "~0.9.3"
+    "typeahead.js": "~0.9.3",
+    "nprogress": "~0.1.2"
   },
   "devDependencies": {}
 }
