@@ -20,6 +20,9 @@ require.config({
             exports: 'jquery'
         },
         nprogress: {
+            deps: [
+                'jquery'
+            ],
             exports: 'NProgress'
         }
     },
@@ -37,8 +40,19 @@ require.config({
 
 require([
     'backbone',
+    'nprogress',
     'views/app'
-], function (Backbone, AppView) {
+], function (Backbone, NProgress, AppView) {
+    $(document).on({
+        ajaxStart: function() {
+             NProgress.start();
+
+        },
+        ajaxComplete: function() {
+             NProgress.done();
+        }
+    });
+
     var App = new AppView;
 
     Backbone.history.start();

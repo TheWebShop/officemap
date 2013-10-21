@@ -35,6 +35,10 @@ define([
 
         controlTemplate: JST['app/scripts/templates/mapControl.ejs'],
 
+        infowindow: new google.maps.InfoWindow({
+            maxWidth: 300
+        }),
+
         initialize: function(options) {
             var mapView = this;
             _.bindAll(this, 'addOfficeMarker', 'zoom', 'home');
@@ -64,8 +68,10 @@ define([
                 vent.trigger('home');
             });
 
-            vent.on('resize', function() {
-                google.maps.event.trigger(this.map, 'resize');
+            vent.on({
+                resize: function() {
+                    google.maps.event.trigger(this.map, 'resize');
+                }
             });
         },
 

@@ -9,15 +9,16 @@ define([
 ], function ($, _, Backbone, JST, vent) {
     'use strict';
 
-    var OfficeListView = Backbone.View.extend({
-        template: JST['app/scripts/templates/officeList.ejs'],
+    var GeolocationlistView = Backbone.View.extend({
 
-        el: $("#office-list")[0],
+        el: $("#geolocation-list")[0],
 
-        $el: $("#office-list"),
+        $el: $("#geolocation-list"),
+
+        template: JST['app/scripts/templates/geolocationList.ejs'],
 
         events: {
-            'click .office': 'focusOffice'
+            'click .geolocation': 'focusGeolocation'
         },
 
         initialize: function(options) {
@@ -26,23 +27,27 @@ define([
         },
 
         render: function() {
-            $(this.el).html(this.template({offices:  this.offices.toJSON()}))
-                .fadeIn()
+            console.log(this)
+            this.$el.html(this.template({geolocations:  this.geolocations.toJSON()}))
+                .fadeIn();
         },
 
         hide: function() {
             this.$el.hide();
         },
 
-        focusOffice: function(e){
+        focusGeolocation: function(e){
             var $target = $(e.target);
+            console.log($target)
+            /*
             var id = $target.data('officelist-id');
             var office = this.offices.get(id);
 
-            vent.trigger('focus:office', office);
+            vent.trigger('focus:geolocation', geolocation);
             vent.trigger('toggle:leftPanel');
+            */
         }
     });
 
-    return OfficeListView;
+    return GeolocationlistView;
 });

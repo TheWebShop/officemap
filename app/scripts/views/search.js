@@ -17,6 +17,8 @@ define([
 
         $el: $("#search-map"),
 
+        $input: $('#search-input'),
+
         template: JST['app/scripts/templates/search.ejs'],
 
         events: {
@@ -55,6 +57,7 @@ define([
 
         geolocate: function(e) {
             e.preventDefault();
+            vent.trigger('geolocate', this.$input.val());
         },
 
         focusOffice: function(e, selection) {
