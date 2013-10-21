@@ -19,6 +19,11 @@ define([
 
         template: JST['app/scripts/templates/search.ejs'],
 
+        events: {
+            'click #search-button': 'geolocate',
+            'typeahead:selected #search-input': 'focusOffice'
+        },
+
         initialize: function(options) {
             _.extend(this, options);
         },
@@ -43,10 +48,17 @@ define([
                 local: offices,
                 template: this.template(),
                 engine: EJS
-            })
-            .on('typeahead:selected', function(e, selection) {
-                vent.trigger('focus:office', selection.model);
             });
+
+            this.$el.fadeIn();
+        },
+
+        geolocate: function(e) {
+            e.preventDefault();
+        },
+
+        focusOffice: function(e, selection) {
+            vent.trigger('focus:office', selection.model);
         }
     });
 
