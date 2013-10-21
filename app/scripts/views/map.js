@@ -12,6 +12,24 @@ define([
 ], function ($, _, Backbone, JST, gmaps, OfficePopup, MapcontrolView, vent) {
     'use strict';
 
+    // as per http://stackoverflow.com/questions/7095574/google-maps-api-3-custom-marker-color-for-default-dot-marker/7686977#7686977
+    var PinImage = function(color) {
+        var pinColor = color || 'FE7569';
+
+        return new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+            new google.maps.Size(21, 34),
+            new google.maps.Point(0,0),
+            new google.maps.Point(10, 34));
+    }
+    var PinShadow = function(color) {
+        var pinColor = color || 'FE7569';
+
+        return new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
+            new google.maps.Size(40, 37),
+            new google.maps.Point(0, 0),
+            new google.maps.Point(12, 35));
+    }
+
     var MapView = Backbone.View.extend({
 
         el: $("#map")[0],
@@ -96,7 +114,8 @@ define([
             var marker = new google.maps.Marker({
                 position: new google.maps.LatLng(location.lb, location.mb),
                 map: this.map,
-                geolocation: geolocation
+                geolocation: geolocation,
+                icon: new PinImage('efefef')
             });
 
             geolocation.marker = marker;
