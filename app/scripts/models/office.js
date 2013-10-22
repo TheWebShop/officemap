@@ -12,7 +12,14 @@ define([
         list: 'Offices',
         initialize: function() {
             var url = this.get('Website') || '';
-            this.set('url', url.replace(/, .*/, ''));
+
+            this.set({
+                url: url.replace(/, .*/, ''),
+                location: {
+                    lat: this.get('Latitude'),
+                    lng: this.get('Longitude')
+                }
+            });
         }
     });
 

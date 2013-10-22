@@ -62,7 +62,7 @@ define([
         },
 
         focusOffice: function(e, selection) {
-            vent.trigger('focus:office', selection.model);
+            vent.trigger('focus:marker', selection.model);
         }
     });
 

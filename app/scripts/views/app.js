@@ -45,7 +45,7 @@ define([
                 offices: this.offices
             });
 
-            this.offices.on('add', this.gmap.addOfficeMarker)
+            this.offices.on('add', this.gmap.addMarker)
                 .fetch({
                     orderby: 'Office asc',
                     add: true
@@ -59,7 +59,7 @@ define([
             this.geolocations.on('reset', this.gmap.mapGeolocations)
 
             vent.on({
-                'focus:office': this.gmap.focusOffice,
+                'focus:marker': this.gmap.focusMarker,
                 'home': this.gmap.home,
                 'open:leftPanel': this.openLeftPanel,
                 'toggle:leftPanel': this.toggleLeftPanel,

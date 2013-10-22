@@ -40,9 +40,9 @@ define([
         focusGeolocation: function(e){
             var $target = $(e.target);
             var index = $target.data('geolocationlist-index');
-            var geolocation = this.geolocations.models[index];
+            var model = this.geolocations.models[index];
 
-            vent.trigger('focus:geolocation', geolocation);
+            vent.trigger('focus:marker', model);
         }
     });
 

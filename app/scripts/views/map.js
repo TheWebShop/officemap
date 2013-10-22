@@ -59,7 +59,7 @@ define([
 
         initialize: function(options) {
             var mapView = this;
-            _.bindAll(this, 'addOfficeMarker', 'addGeoMarker', 'zoom', 'home', 'mapGeolocations');
+            _.bindAll(this, 'addMarker', 'zoom', 'home', 'mapGeolocations');
 
             this.map = new google.maps.Map(this.el, this.mapOptions);
             this.infowindow = new google.maps.InfoWindow({
@@ -93,44 +93,35 @@ define([
             });
         },
 
-        addOfficeMarker: function(office) {
+        addMarker: function(model, color) {
             var mapView = this;
-            var marker = new google.maps.Marker({
-                position: new google.maps.LatLng(office.get('Latitude'), office.get('Longitude')),
+            var location = model.get('location');
+            var opts = {
+                position: new google.maps.LatLng(location.lat, location.lng),
                 map: this.map,
-                office: office
-            });
+                model: model
+            };
+            if(typeof color == 'string') {
+                opts.icon = new PinImage(color);
+            };
+            var marker = new google.maps.Marker(opts);
 
-            office.marker = marker;
+            model.marker = marker;
 
             google.maps.event.addListener(marker, 'click', function() {
-                mapView.showOfficePopup(this);
-            });
-        },
-
-        addGeoMarker: function(geolocation) {
-            var location = geolocation.get('geometry').location
-            var mapView = this;
-            var marker = new google.maps.Marker({
-                position: new google.maps.LatLng(location.lb, location.mb),
-                map: this.map,
-                geolocation: geolocation,
-                icon: new PinImage('efefef')
-            });
-
-            geolocation.marker = marker;
-
-            google.maps.event.addListener(marker, 'click', function() {
-                mapView.showOfficePopup(this);
+                mapView.showPopup(this);
             });
         },
 
         mapGeolocations: function(geolocations) {
-            _.each(geolocations.models, this.addGeoMarker);
+            var mapView = this;
+            _.each(geolocations.models, function(geolocation) {
+                mapView.addMarker(geolocation, 'efefef');
+            });
         },
 
-        showOfficePopup: function(marker) {
-            this.popup = new OfficePopup({model: marker.office});
+        showPopup: function(marker) {
+            this.popup = new OfficePopup({model: marker.model});
             this.infowindow.setContent(this.popup.render().el);
             this.infowindow.open(this.map, marker);
         },
@@ -145,12 +136,8 @@ define([
             this.map.setZoom(this.mapOptions.zoom);
         },
 
-        focusOffice: function(office){
-            new gmaps.event.trigger(office.marker, 'click');
-        },
-
-        focusGeolocation: function(geolocation){
-            new gmaps.event.trigger(geolocation.marker, 'click');
+        focusMarker: function(model){
+            new gmaps.event.trigger(model.marker, 'click');
         }
     });
 

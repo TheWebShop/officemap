@@ -7,7 +7,14 @@ define([
     'use strict';
 
     var GeolocationModel = Backbone.Model.extend({
-        defaults: {
+        initialize: function() {
+            var location = this.get('geometry').location;
+            this.set({
+                location: {
+                    lat: location.lb,
+                    lng: location.mb
+                }
+            });
         }
     });
 

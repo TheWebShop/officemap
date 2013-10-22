@@ -37,9 +37,9 @@ define([
         focusOffice: function(e){
             var $target = $(e.target);
             var id = $target.data('officelist-id');
-            var office = this.offices.get(id);
+            var model = this.offices.get(id);
 
-            vent.trigger('focus:office', office);
+            vent.trigger('focus:marker', model);
         }
     });
 
