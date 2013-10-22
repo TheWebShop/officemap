@@ -113,10 +113,16 @@ define([
             });
         },
 
+        clearGeolocations: function(geolocations) {
+            _.each(geolocations.models, function(model) {
+                model.marker.setMap(null);
+            });
+        },
+
         mapGeolocations: function(geolocations) {
             var mapView = this;
-            _.each(geolocations.models, function(geolocation) {
-                mapView.addMarker(geolocation, 'efefef');
+            _.each(geolocations.models, function(model) {
+                mapView.addMarker(model, 'efefef');
             });
         },
 

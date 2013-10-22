@@ -55,8 +55,9 @@ define([
                     appView.search.render();
                 });
 
-            this.geolocations.on('reset', this.showGeolocations)
-            this.geolocations.on('reset', this.gmap.mapGeolocations)
+            this.geolocations.on('beforeFetch', this.gmap.clearGeolocations);
+            this.geolocations.on('reset', this.gmap.mapGeolocations);
+            this.geolocations.on('reset', this.showGeolocations);
 
             vent.on({
                 'focus:marker': this.gmap.focusMarker,

@@ -23,11 +23,11 @@ define([
         "GEOMETRIC_CENTER": "The returned result is the geometric center of a result such a line (e.g. street) or polygon (region).",
         "APPROXIMATE": "The returned result is approximate."
     }
-
     var GeolocationsCollection = Backbone.Collection.extend({
         geocoder: new gmaps.Geocoder(),
         model: GeolocationModel,
         fetch : function(query) {
+            this.trigger('beforeFetch', this);
             var dfd = new $.Deferred();
             var geolocationsCollection = this;
             // BC bounds from api demo http://gmaps-samples-v3.googlecode.com/svn/trunk/geocoder/v3-geocoder-tool.html#q%3Dbc%20canada
