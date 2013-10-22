@@ -25,7 +25,7 @@ define([
         },
 
         zoomOnMarker: function(e) {
-            var marker = this.model.marker;
+            var marker = this.model.get('marker');
 
             vent.trigger('zoom', marker.getPosition(), 15);
             e.preventDefault();

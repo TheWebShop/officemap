@@ -59,7 +59,7 @@ define([
 
         initialize: function(options) {
             var mapView = this;
-            _.bindAll(this, 'addMarker', 'zoom', 'home', 'mapGeolocations');
+            _.bindAll(this, 'addMarker', 'zoom', 'centerMap', 'mapGeolocations');
 
             this.map = new google.maps.Map(this.el, this.mapOptions);
             this.infowindow = new google.maps.InfoWindow({
@@ -82,9 +82,7 @@ define([
                 className: 'home'
             });
             this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(homeMapControl.el);
-            google.maps.event.addDomListener(homeMapControl.el, 'click', function() {
-                vent.trigger('home');
-            });
+            google.maps.event.addDomListener(homeMapControl.el, 'click', this.centerMap);
 
             vent.on('resize', function() {
                 google.maps.event.trigger(mapView.map, 'resize');
@@ -104,7 +102,7 @@ define([
             };
             var marker = new google.maps.Marker(opts);
 
-            model.marker = marker;
+            model.set('marker', marker);
 
             google.maps.event.addListener(marker, 'click', function() {
                 mapView.showPopup(this);
@@ -113,7 +111,7 @@ define([
 
         clearGeolocations: function(geolocations) {
             _.each(geolocations.models, function(model) {
-                model.marker.setMap(null);
+                model.get('marker').setMap(null);
             });
         },
 
@@ -135,13 +133,31 @@ define([
             this.map.setZoom(15);
         },
 
-        home: function() {
-            this.map.setCenter(this.mapOptions.center);
-            this.map.setZoom(this.mapOptions.zoom);
+        centerMap: function(markers) {
+            var centerOnMarker = function(map, marker, zoom) {
+                map.panTo(marker.getPosition());
+                map.setZoom(zoom);
+            };
+            var centerOnMarkers = function(map, markers) {
+                var bounds = new google.maps.LatLngBounds();
+                _.each(markers, function(marker) {
+                    bounds.extend(marker.position);
+                    map.fitBounds(bounds);
+                }, this);
+            };
+
+            if(_.isArray(markers) && markers.length === 1) {
+                centerOnMarker(this.map, markers[0], 15);
+            }else if(_.isArray(markers)) {
+                centerOnMarkers(this.map, markers);
+            }else {
+                this.map.setCenter(this.mapOptions.center);
+                this.map.setZoom(this.mapOptions.zoom);
+            }
         },
 
         focusMarker: function(model){
-            new gmaps.event.trigger(model.marker, 'click');
+            new gmaps.event.trigger(model.get('marker'), 'click');
         }
     });
 

@@ -55,13 +55,17 @@ define([
                     appView.search.render();
                 });
 
-            this.geolocations.on('beforeFetch', this.gmap.clearGeolocations);
-            this.geolocations.on('reset', this.gmap.mapGeolocations);
-            this.geolocations.on('reset', this.showGeolocations);
+            this.geolocations.on({
+                beforeFetch: this.gmap.clearGeolocations,
+                reset: function(geolocations) {
+                    appView.gmap.mapGeolocations(geolocations);
+                    appView.gmap.centerMap(geolocations.pluck('marker'));
+                    appView.showGeolocations(geolocations);
+                }
+            });
 
             vent.on({
                 'focus:marker': this.gmap.focusMarker,
-                'home': this.gmap.home,
                 'open:leftPanel': this.openLeftPanel,
                 'toggle:leftPanel': this.toggleLeftPanel,
                 'zoom': this.gmap.zoom,
