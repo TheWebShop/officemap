@@ -45,15 +45,20 @@ define([
                 offices: this.offices
             });
 
-            this.offices.on('add', this.gmap.addMarker)
-                .fetch({
-                    orderby: 'Office asc',
-                    add: true
-                })
-                .done(function() {
-                    appView.officeList.render();
-                    appView.search.render();
+            this.offices.on('add', function(model) {
+                var marker = appView.gmap.addMarker(model);
+                google.maps.event.addListener(marker, 'click', function() {
+                    appView.gmap.showPopup(this);
                 });
+            })
+            .fetch({
+                orderby: 'Office asc',
+                add: true
+            })
+            .done(function() {
+                appView.officeList.render();
+                appView.search.render();
+            });
 
             this.geolocations.on({
                 beforeFetch: this.gmap.clearGeolocations,
@@ -68,7 +73,7 @@ define([
                 'focus:marker': this.gmap.focusMarker,
                 'open:leftPanel': this.openLeftPanel,
                 'toggle:leftPanel': this.toggleLeftPanel,
-                'zoom': this.gmap.centerMapOnPosition,
+                'zoom': this.gmap.centerMap,
                 'geolocate': _.bind(this.geolocate, this),
                 'show:offices': this.showOffices(),
                 'show:geolocations': this.showGeolocations()

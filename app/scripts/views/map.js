@@ -104,9 +104,7 @@ define([
 
             model.set('marker', marker);
 
-            google.maps.event.addListener(marker, 'click', function() {
-                mapView.showPopup(this);
-            });
+            return marker;
         },
 
         clearGeolocations: function(geolocations) {
