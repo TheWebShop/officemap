@@ -6,10 +6,9 @@ define([
     'backbone',
     'templates',
     'gmaps',
-    'views/OfficePopup',
     'views/mapControl',
     'vent'
-], function ($, _, Backbone, JST, gmaps, OfficePopup, MapcontrolView, vent) {
+], function ($, _, Backbone, JST, gmaps, MapcontrolView, vent) {
     'use strict';
 
     // as per http://stackoverflow.com/questions/7095574/google-maps-api-3-custom-marker-color-for-default-dot-marker/7686977#7686977
@@ -120,8 +119,8 @@ define([
             });
         },
 
-        showPopup: function(marker) {
-            this.popup = new OfficePopup({model: marker.model});
+        showMarkerPopup: function(constructor, marker) {
+            this.popup = new constructor({model: marker.model});
             this.infowindow.setContent(this.popup.render().el);
             this.infowindow.open(this.map, marker);
         },
@@ -133,13 +132,20 @@ define([
 
         centerMapOnMarkers: function(markers) {
             if(markers.length === 1) {
-                this.centerMapOnPosition(markers[0].getPosition());
+                this.centerMap({
+                    position: markers[0].getPosition(),
+                    zoom: 15
+                });
+                console.log({
+                    position: markers[0].getPosition(),
+                    zoom: 15
+                })
             }else {
                 var bounds = new google.maps.LatLngBounds();
                 _.each(markers, function(marker) {
-                    this.map.fitBounds(bounds);
-                }, this);
-                console.log(bounds)
+                    bounds.extend(marker.position);
+                });
+                this.map.fitBounds(bounds);
             }
         },
 

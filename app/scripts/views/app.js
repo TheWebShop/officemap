@@ -10,8 +10,10 @@ define([
     'collections/geolocations',
     'views/geolocationList',
     'views/search',
+    'views/GeoPopup',
+    'views/OfficePopup',
     'vent'
-], function ($, _, Backbone, MapView, OfficelistCollection, OfficeListView, GeolocationsCollection, GeolocationlistView, SearchView, vent) {
+], function ($, _, Backbone, MapView, OfficelistCollection, OfficeListView, GeolocationsCollection, GeolocationlistView, SearchView, GeoPopup, OfficePopup, vent) {
     'use strict';
 
     var AppView = Backbone.View.extend({
@@ -48,7 +50,7 @@ define([
             this.offices.on('add', function(model) {
                 var marker = appView.gmap.addMarker(model);
                 google.maps.event.addListener(marker, 'click', function() {
-                    appView.gmap.showPopup(this);
+                    appView.gmap.showMarkerPopup(OfficePopup, this);
                 });
             })
             .fetch({
@@ -63,7 +65,13 @@ define([
             this.geolocations.on({
                 beforeFetch: this.gmap.clearGeolocations,
                 reset: function(geolocations) {
-                    appView.gmap.mapGeolocations(geolocations);
+                    geolocations.each(function(model) {
+                        appView.gmap.addMarker(model, 'efefef');
+                        google.maps.event.addListener(model.get('marker'), 'click', function() {
+                            appView.gmap.showMarkerPopup(GeoPopup, this);
+                        });
+                    });
+
                     appView.gmap.centerMapOnMarkers(geolocations.pluck('marker'));
                     appView.showGeolocations(geolocations);
                 }
