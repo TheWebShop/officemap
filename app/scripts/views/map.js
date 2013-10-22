@@ -86,10 +86,8 @@ define([
                 vent.trigger('home');
             });
 
-            vent.on({
-                resize: function() {
-                    google.maps.event.trigger(this.map, 'resize');
-                }
+            vent.on('resize', function() {
+                google.maps.event.trigger(mapView.map, 'resize');
             });
         },
 
