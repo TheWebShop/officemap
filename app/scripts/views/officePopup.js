@@ -27,7 +27,10 @@ define([
         zoomOnMarker: function(e) {
             var marker = this.model.get('marker');
 
-            vent.trigger('zoom', marker.getPosition(), 15);
+            vent.trigger('zoom', {
+                position: marker.getPosition(),
+                zoom: 15
+            });
             e.preventDefault();
         }
     });

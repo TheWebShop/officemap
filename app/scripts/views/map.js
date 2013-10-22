@@ -59,7 +59,7 @@ define([
 
         initialize: function(options) {
             var mapView = this;
-            _.bindAll(this, 'addMarker', 'zoom', 'centerMap', 'mapGeolocations');
+            _.bindAll(this, 'addMarker', 'centerMap', 'centerMapOnMarkers', 'mapGeolocations');
 
             this.map = new google.maps.Map(this.el, this.mapOptions);
             this.infowindow = new google.maps.InfoWindow({
@@ -128,31 +128,20 @@ define([
             this.infowindow.open(this.map, marker);
         },
 
-        zoom: function(position, zoom) {
-            this.map.setCenter(position);
-            this.map.setZoom(15);
+        centerMap: function(options) {
+            this.map.setCenter(options.position || this.mapOptions.center);
+            this.map.setZoom(options.zoom || this.mapOptions.zoom);
         },
 
-        centerMap: function(markers) {
-            var centerOnMarker = function(map, marker, zoom) {
-                map.panTo(marker.getPosition());
-                map.setZoom(zoom);
-            };
-            var centerOnMarkers = function(map, markers) {
+        centerMapOnMarkers: function(markers) {
+            if(markers.length === 1) {
+                this.centerMapOnPosition(markers[0].getPosition());
+            }else {
                 var bounds = new google.maps.LatLngBounds();
                 _.each(markers, function(marker) {
-                    bounds.extend(marker.position);
-                    map.fitBounds(bounds);
+                    this.map.fitBounds(bounds);
                 }, this);
-            };
-
-            if(_.isArray(markers) && markers.length === 1) {
-                centerOnMarker(this.map, markers[0], 15);
-            }else if(_.isArray(markers)) {
-                centerOnMarkers(this.map, markers);
-            }else {
-                this.map.setCenter(this.mapOptions.center);
-                this.map.setZoom(this.mapOptions.zoom);
+                console.log(bounds)
             }
         },
 

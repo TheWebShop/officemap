@@ -59,7 +59,7 @@ define([
                 beforeFetch: this.gmap.clearGeolocations,
                 reset: function(geolocations) {
                     appView.gmap.mapGeolocations(geolocations);
-                    appView.gmap.centerMap(geolocations.pluck('marker'));
+                    appView.gmap.centerMapOnMarkers(geolocations.pluck('marker'));
                     appView.showGeolocations(geolocations);
                 }
             });
@@ -68,7 +68,7 @@ define([
                 'focus:marker': this.gmap.focusMarker,
                 'open:leftPanel': this.openLeftPanel,
                 'toggle:leftPanel': this.toggleLeftPanel,
-                'zoom': this.gmap.zoom,
+                'zoom': this.gmap.centerMapOnPosition,
                 'geolocate': _.bind(this.geolocate, this),
                 'show:offices': this.showOffices(),
                 'show:geolocations': this.showGeolocations()
