@@ -15,16 +15,18 @@ define([
         className: 'gmap-popup',
 
         events: {
-            'click .zoom': 'zoomOnMarker'
+            'click .zoom': 'zoomOnMarker',
+            'click .office': 'focusOffice'
         },
 
         initialize: function(options) {
-            _.bindAll(this, 'sortMarkersByDistance');
+            _.extend(this, options);
+            _.bindAll(this, 'sortMarkersByDistance', 'focusOffice');
 
-            var markers = options.offices.pluck('marker');
-            markers = this.sortMarkersByDistance(markers);
+            var neighbours = this.offices.pluck('marker');
+            neighbours = this.sortMarkersByDistance(neighbours);
 
-            this.model.set('neighbours', _.pluck(markers, 'model'));
+            this.model.set('neighbours', _.pluck(neighbours, 'model'));
         },
 
         render: function() {
@@ -56,6 +58,14 @@ define([
             }
 
             return _.sortBy(markers, distanceFromHere);
+        },
+
+        focusOffice: function(e){
+            var $target = $(e.target);
+            var id = $target.data('officelist-id');
+            var model = this.offices.get(id);
+
+            vent.trigger('focus:marker', model);
         }
     });
 
