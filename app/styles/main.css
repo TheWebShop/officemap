@@ -252,6 +252,10 @@ a:hover {
     height: 14px;
     opacity: 0.47;
 }
+.highresdisplay .close-panel-icon {
+    background-image: url(../images/icons@2x.png);
+    background-size: 20px 100px;
+}
 .close-panel-icon:hover {
     opacity: .8;
 }
