@@ -8,7 +8,7 @@ define([
     'ejs',
     'vent',
     'typeahead'
-], function ($, _, Backbone, JST, EJS, vent) {
+], function ($, _, Backbone, JST, EJS, vent, oninput) {
     'use strict';
 
     var SearchView = Backbone.View.extend({
@@ -58,6 +58,10 @@ define([
                 local: offices,
                 template: this.suggestionTemplate(),
                 engine: EJS
+            })
+            // IE8 shim
+            .on('propertychange', function() {
+                $(this).trigger('input');
             });
 
             $(window).on('resize', this.measureDropdown);
@@ -97,6 +101,10 @@ define([
                 this.dropdownHeight = height;
                 vent.trigger('resize:dropdown', this.dropdownHeight);
             }
+        },
+
+        onpropertychange: function() {
+            alert('change');
         }
     });
 
