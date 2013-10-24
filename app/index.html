@@ -20,28 +20,18 @@
     </head>
     <body>
 
-        <header id="top-nav" class="top-nav">
-            <form action="#" id="search-map" class="hide">
-                <input id="search-input" type="text"><button id="search-button"><span class="icon-search"></span></button>
-            </form>
-        </header>
-        <div id="page">
+        <section id="panel" class="panel hide">
+            <header>
 
-            <section id="left-panel" class="left-panel">
-                <header>
-                    <button class="btn show-offices">Offices</button>
-                </header>
-                <ul id="office-list" class="office-list hide"></ul>
-                <ul id="geolocation-list" class="geolocation-list hide"></ul>
-            </section>
+                <a href="#" class="show-offices hide">Offices</a>
+                <button class="close-panel pull-right"><span class="panel-close-icon"></span></button>
+            </header>
+            <ul id="office-list" class="office-list hide"></ul>
+            <ul id="geolocation-list" class="geolocation-list hide"></ul>
+        </section>
 
-            <div id="map-container">
-                <div class="shadow-top"></div>
-                <div class="shadow-left"></div>
-                <div id="map" class="map"></div>
-            </div>
+        <div id="map" class="map"></div>
 
-        </div>
 
         <!-- build:js scripts/main.js -->
         <script data-main="scripts/main" src="bower_components/requirejs/require.js"></script>

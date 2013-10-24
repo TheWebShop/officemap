@@ -1,5 +1,13 @@
 <h4><%= formatted_address %></h4>
 
+<h5>Nearest Offices</h5>
+<ul>
+    <% for(var i=0; i<5; i++) {
+        var neighbour = neighbours[i].attributes;
+    %>
+       <li><a href="#<%= neighbour.Name %>" class="office" data-officelist-id="<%= neighbours[i].Id %>"><%= neighbour.Office %> - <%= neighbour.Name %></a></li>
+    <% } %>
+</ul>
 <hr>
 <p><a href="#" class="zoom"><i class="icon-zoom-in"></i> zoom</a></p>
 

@@ -7,8 +7,11 @@ define([
     'templates',
     'gmaps',
     'views/mapControl',
+    'views/search',
+    'views/GeoPopup',
+    'views/OfficePopup',
     'vent'
-], function ($, _, Backbone, JST, gmaps, MapcontrolView, vent) {
+], function ($, _, Backbone, JST, gmaps, MapcontrolView, SearchView, GeoPopup, OfficePopup, vent) {
     'use strict';
 
     // as per http://stackoverflow.com/questions/7095574/google-maps-api-3-custom-marker-color-for-default-dot-marker/7686977#7686977
@@ -41,12 +44,12 @@ define([
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             panControl: true,
             panControlOptions: {
-                position: google.maps.ControlPosition.LEFT_TOP
+                position: google.maps.ControlPosition.RIGHT_CENTER
             },
             zoomControl: true,
             zoomControlOptions: {
                 style: google.maps.ZoomControlStyle.LARGE,
-                position: google.maps.ControlPosition.LEFT_TOP
+                position: google.maps.ControlPosition.RIGHT_CENTER
             }
         },
 
@@ -65,16 +68,6 @@ define([
                 maxWidth: 300
             });
 
-            var leftPanelControl = new MapcontrolView({
-                title: 'Show Panel',
-                text: 'Show Panel',
-                className: 'expand-left'
-            });
-            this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(leftPanelControl.el);
-            google.maps.event.addDomListener(leftPanelControl.el, 'click', function() {
-                vent.trigger('toggle:leftPanel');
-            });
-
             var homeMapControl = new MapcontrolView({
                 title: 'Click to zoom out',
                 text: 'Home',
@@ -82,10 +75,6 @@ define([
             });
             this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(homeMapControl.el);
             google.maps.event.addDomListener(homeMapControl.el, 'click', this.centerMap);
-
-            vent.on('resize', function() {
-                google.maps.event.trigger(mapView.map, 'resize');
-            });
         },
 
         addMarker: function(model, color) {
@@ -119,8 +108,18 @@ define([
             });
         },
 
-        showMarkerPopup: function(constructor, marker) {
-            this.popup = new constructor({model: marker.model});
+        showGeoPopup: function(marker, offices) {
+            this.popup = new GeoPopup({
+                model: marker.model,
+                offices: offices
+            });
+            this.infowindow.open(this.map, marker);
+            this.infowindow.setContent(this.popup.render().el);
+
+        },
+
+        showOfficePopup: function(marker) {
+            this.popup = new OfficePopup({model: marker.model});
             this.infowindow.setContent(this.popup.render().el);
             this.infowindow.open(this.map, marker);
         },

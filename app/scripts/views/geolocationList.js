@@ -9,7 +9,7 @@ define([
 ], function ($, _, Backbone, JST, vent) {
     'use strict';
 
-    var GeolocationlistView = Backbone.View.extend({
+    var GeolocationListView = Backbone.View.extend({
 
         el: $("#geolocation-list")[0],
 
@@ -46,5 +46,5 @@ define([
         }
     });
 
-    return GeolocationlistView;
+    return GeolocationListView;
 });

@@ -13,24 +13,32 @@ define([
 
     var SearchView = Backbone.View.extend({
 
-        el: $("#search-map")[0],
+        dropdownHeight: 0,
 
-        $el: $("#search-map"),
+        searchTemplate: JST['app/scripts/templates/search.ejs'],
 
-        $input: $('#search-input'),
+        suggestionTemplate: JST['app/scripts/templates/suggestion.ejs'],
 
-        template: JST['app/scripts/templates/search.ejs'],
+        id: 'search-container',
+
+        className: 'search-container searchbox-shadow',
 
         events: {
             'click #search-button': 'geolocate',
-            'typeahead:selected #search-input': 'focusOffice'
+            'typeahead:selected #search-input': 'focusOffice',
+            'focus #search-input': 'focusInput',
+            'input #search-input': 'changeInput',
+            'blur #search-input': 'blurInput'
         },
 
         initialize: function(options) {
             _.extend(this, options);
+            _.bindAll(this, 'measureDropdown');
         },
 
         render: function() {
+            $(this.el).html(this.searchTemplate());
+
             var offices = this.offices.map(function(office) {
                 var Name = office.get('Name');
                 var Office = office.get('Office');
@@ -45,24 +53,50 @@ define([
                 };
             });
 
-            $('#search-input').typeahead({
+            this.$el.find('#search-input').typeahead({
                 name: 'offices',
                 local: offices,
-                template: this.template(),
+                template: this.suggestionTemplate(),
                 engine: EJS
             });
 
-            this.$el.fadeIn();
+            $(window).on('resize', this.measureDropdown);
+
+            return this.$el;
         },
 
         geolocate: function(e) {
             e.preventDefault();
-            vent.trigger('geolocate', this.$input.val());
-            vent.trigger('open:leftPanel');
+            vent.trigger('geolocate', this.$el.find('#search-input').val());
+            vent.trigger('open:panel');
         },
 
         focusOffice: function(e, selection) {
             vent.trigger('focus:marker', selection.model);
+            this.measureDropdown();
+        },
+
+        focusInput: function() {
+            vent.trigger('open:panel');
+            this.measureDropdown();
+        },
+
+        changeInput: function() {
+            this.measureDropdown();
+        },
+
+        blurInput: function() {
+            this.measureDropdown();
+        },
+
+        measureDropdown: function(e) {
+            var forceResize = !!e;
+            var height = this.$el.find('.tt-dropdown-menu').outerHeight();
+
+            if(forceResize || height != this.dropdownHeight){
+                this.dropdownHeight = height;
+                vent.trigger('resize:dropdown', this.dropdownHeight);
+            }
         }
     });
 

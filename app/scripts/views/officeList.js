@@ -27,7 +27,7 @@ define([
 
         render: function() {
             $(this.el).html(this.template({offices:  this.offices.toJSON()}))
-                .fadeIn()
+                .fadeIn();
         },
 
         hide: function() {

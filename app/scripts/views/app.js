@@ -10,10 +10,8 @@ define([
     'collections/geolocations',
     'views/geolocationList',
     'views/search',
-    'views/GeoPopup',
-    'views/OfficePopup',
     'vent'
-], function ($, _, Backbone, MapView, OfficelistCollection, OfficeListView, GeolocationsCollection, GeolocationlistView, SearchView, GeoPopup, OfficePopup, vent) {
+], function ($, _, Backbone, MapView, OfficelistCollection, OfficeListView, GeolocationsCollection, GeolocationListView, SearchView, vent) {
     'use strict';
 
     var AppView = Backbone.View.extend({
@@ -22,14 +20,19 @@ define([
 
         $el: $("body"),
 
+        panelHeight: $('.panel').height(),
+
+        panelOffsetTop: parseInt($('.panel').css('top').match(/(\d*)/)[0], 10),
+
         geolocations: new GeolocationsCollection(),
 
         events: {
-            'click .show-offices': 'showOffices'
+            'click .show-offices': 'showOffices',
+            'click .close-panel': 'closePanel'
         },
 
         initialize: function() {
-            _.bindAll(this, 'resizePage', 'showOffices', 'showGeolocations');
+            _.bindAll(this, 'resizePage', 'showOffices', 'showGeolocations', 'resizeDropdown');
             var appView = this;
 
             this.resizePage();
@@ -40,7 +43,7 @@ define([
             this.officeList = new OfficeListView({
                 offices: this.offices
             });
-            this.geolocationList = new GeolocationlistView({
+            this.geolocationList = new GeolocationListView({
                 geolocations: this.geolocations
             });
             this.search = new SearchView({
@@ -50,7 +53,7 @@ define([
             this.offices.on('add', function(model) {
                 var marker = appView.gmap.addMarker(model);
                 google.maps.event.addListener(marker, 'click', function() {
-                    appView.gmap.showMarkerPopup(OfficePopup, this);
+                    appView.gmap.showOfficePopup(this);
                 });
             })
             .fetch({
@@ -59,7 +62,7 @@ define([
             })
             .done(function() {
                 appView.officeList.render();
-                appView.search.render();
+                appView.search.render().appendTo(appView.$el);
             });
 
             this.geolocations.on({
@@ -68,7 +71,7 @@ define([
                     geolocations.each(function(model) {
                         appView.gmap.addMarker(model, 'efefef');
                         google.maps.event.addListener(model.get('marker'), 'click', function() {
-                            appView.gmap.showMarkerPopup(GeoPopup, this);
+                            appView.gmap.showGeoPopup(this, appView.offices);
                         });
                     });
 
@@ -79,25 +82,22 @@ define([
 
             vent.on({
                 'focus:marker': this.gmap.focusMarker,
-                'open:leftPanel': this.openLeftPanel,
-                'toggle:leftPanel': this.toggleLeftPanel,
+                'open:panel': this.openPanel,
+                'close:panel': this.closePanel,
                 'zoom': this.gmap.centerMap,
                 'geolocate': _.bind(this.geolocate, this),
                 'show:offices': this.showOffices(),
-                'show:geolocations': this.showGeolocations()
+                'show:geolocations': this.showGeolocations(),
+                'resize:dropdown': this.resizeDropdown
             });
         },
 
-        openLeftPanel: function() {
-            $('#left-panel').addClass('open');
-            $('#map-container').addClass('pushed');
-            vent.trigger('resize');
+        openPanel: function() {
+            $('#panel').slideDown(200);
         },
 
-        toggleLeftPanel: function() {
-            $('#left-panel').toggleClass('open');
-            $('#map-container').toggleClass('pushed');
-            vent.trigger('resize');
+        closePanel: function() {
+            $('#panel').slideUp(200);
         },
 
         resizePage: function() {
@@ -117,6 +117,26 @@ define([
         showGeolocations: function() {
             this.officeList.hide();
             this.geolocationList.render();
+        },
+
+        resizeDropdown: function(height) {
+            this.pushPanelDown(height);
+        },
+
+        pushPanelDown: function(distance) {
+            var height = $('#panel').height();
+            var screenHeight = $(window).height();
+
+            if(height + this.panelOffsetTop + distance > screenHeight) {
+                height = screenHeight - this.panelOffsetTop - distance;
+            }else {
+                height = Math.min(this.panelHeight, screenHeight - this.panelOffsetTop - distance);
+            }
+
+            $('#panel').css({
+                top: this.panelOffsetTop + distance,
+                height: height
+            });
         }
     });
 
