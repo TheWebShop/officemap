@@ -193,6 +193,9 @@ a:hover {
     -webkit-box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
     box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
 }
+.lt-ie9 .control-container {
+    border: #666 1px solid;
+}
 .map .control-container:hover {
     background-color: rgb(235, 235, 235);
 }
