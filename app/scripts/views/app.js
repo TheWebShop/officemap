@@ -69,7 +69,7 @@ define([
                 beforeFetch: this.gmap.clearGeolocations,
                 reset: function(geolocations) {
                     geolocations.each(function(model) {
-                        appView.gmap.addMarker(model, 'efefef');
+                        appView.gmap.addMarker(model, true);
                         appView.gmap.addListener(model.get('marker'), 'click', function() {
                             appView.gmap.showGeoPopup(this, appView.offices);
                         });

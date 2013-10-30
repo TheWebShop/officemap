@@ -14,6 +14,7 @@ define([
     'use strict';
 
     // as per http://stackoverflow.com/questions/7095574/google-maps-api-3-custom-marker-color-for-default-dot-marker/7686977#7686977
+    /* the service is not responding for some reason
     var PinImage = function(color) {
         var pinColor = color || 'FE7569';
 
@@ -31,7 +32,13 @@ define([
             new gmaps.Point(12, 35));
     };
     */
-
+    var blueMarkerIcon = {
+        url: '/images/marker@2x.png',
+        size: new google.maps.Size(44, 40),
+        scaledSize: new google.maps.Size(22, 40),
+        // The anchor for this image is the bottom center of the image
+        anchor: new google.maps.Point(11, 40)
+    };
     var MapView = Backbone.View.extend({
 
         el: $('#map')[0],
@@ -76,15 +83,15 @@ define([
             gmaps.event.addDomListener(homeMapControl.el, 'click', this.centerMap);
         },
 
-        addMarker: function(model, color) {
+        addMarker: function(model, useAlternateIcon) {
             var location = model.get('location');
             var opts = {
                 position: new gmaps.LatLng(location.lat, location.lng),
                 map: this.map,
                 model: model
             };
-            if(typeof color === 'string') {
-                opts.icon = new PinImage(color);
+            if(useAlternateIcon) {
+                opts.icon = blueMarkerIcon;
             }
             var marker = new gmaps.Marker(opts);
 
@@ -102,7 +109,7 @@ define([
         mapGeolocations: function(geolocations) {
             var mapView = this;
             _.each(geolocations.models, function(model) {
-                mapView.addMarker(model, 'efefef');
+                mapView.addMarker(model, true);
             });
         },
 
