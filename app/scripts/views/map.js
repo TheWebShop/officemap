@@ -33,7 +33,7 @@ define([
     };
     */
     var blueMarkerIcon = {
-        url: '/images/marker@2x.png',
+        url: 'images/marker@2x.png',
         size: new google.maps.Size(44, 40),
         scaledSize: new google.maps.Size(22, 40),
         // The anchor for this image is the bottom center of the image
