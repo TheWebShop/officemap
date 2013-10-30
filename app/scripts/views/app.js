@@ -16,9 +16,9 @@ define([
 
     var AppView = Backbone.View.extend({
 
-        el: $("body")[0],
+        el: $('body')[0],
 
-        $el: $("body"),
+        $el: $('body'),
 
         panelHeight: $('.panel').height(),
 
@@ -52,7 +52,7 @@ define([
 
             this.offices.on('add', function(model) {
                 var marker = appView.gmap.addMarker(model);
-                google.maps.event.addListener(marker, 'click', function() {
+                appView.gmap.addListener(marker, 'click', function() {
                     appView.gmap.showOfficePopup(this);
                 });
             })
@@ -70,7 +70,7 @@ define([
                 reset: function(geolocations) {
                     geolocations.each(function(model) {
                         appView.gmap.addMarker(model, 'efefef');
-                        google.maps.event.addListener(model.get('marker'), 'click', function() {
+                        appView.gmap.addListener(model.get('marker'), 'click', function() {
                             appView.gmap.showGeoPopup(this, appView.offices);
                         });
                     });

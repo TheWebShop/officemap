@@ -45,15 +45,15 @@ require([
 ], function (Backbone, NProgress, AppView) {
     $(document).on({
         ajaxStart: function() {
-             NProgress.start();
+            NProgress.start();
 
         },
         ajaxComplete: function() {
-             NProgress.done();
+            NProgress.done();
         }
     });
 
-    var App = new AppView;
+    new AppView();
 
     Backbone.history.start();
 });

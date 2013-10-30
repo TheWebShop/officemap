@@ -12,9 +12,9 @@ define([
     var OfficeListView = Backbone.View.extend({
         template: JST['app/scripts/templates/officeList.ejs'],
 
-        el: $("#office-list")[0],
+        el: $('#office-list')[0],
 
-        $el: $("#office-list"),
+        $el: $('#office-list'),
 
         events: {
             'click .office': 'focusOffice'

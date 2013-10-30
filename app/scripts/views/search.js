@@ -8,7 +8,7 @@ define([
     'ejs',
     'vent',
     'typeahead'
-], function ($, _, Backbone, JST, EJS, vent, oninput) {
+], function ($, _, Backbone, JST, EJS, vent) {
     'use strict';
 
     var SearchView = Backbone.View.extend({
@@ -97,14 +97,10 @@ define([
             var forceResize = !!e;
             var height = this.$el.find('.tt-dropdown-menu').outerHeight();
 
-            if(forceResize || height != this.dropdownHeight){
+            if(forceResize || height !== this.dropdownHeight){
                 this.dropdownHeight = height;
                 vent.trigger('resize:dropdown', this.dropdownHeight);
             }
-        },
-
-        onpropertychange: function() {
-            alert('change');
         }
     });
 

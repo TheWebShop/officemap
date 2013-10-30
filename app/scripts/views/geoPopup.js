@@ -55,7 +55,7 @@ define([
                 var y = position.lng();
 
                 return Math.sqrt(Math.pow((x - x0), 2) + Math.pow(y - y0, 2));
-            }
+            };
 
             return _.sortBy(markers, distanceFromHere);
         },

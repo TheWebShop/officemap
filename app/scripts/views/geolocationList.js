@@ -11,9 +11,9 @@ define([
 
     var GeolocationListView = Backbone.View.extend({
 
-        el: $("#geolocation-list")[0],
+        el: $('#geolocation-list')[0],
 
-        $el: $("#geolocation-list"),
+        $el: $('#geolocation-list'),
 
         template: JST['app/scripts/templates/geolocationList.ejs'],
 

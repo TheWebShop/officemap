@@ -9,62 +9,61 @@ define([
     'views/mapControl',
     'views/search',
     'views/GeoPopup',
-    'views/OfficePopup',
-    'vent'
-], function ($, _, Backbone, JST, gmaps, MapcontrolView, SearchView, GeoPopup, OfficePopup, vent) {
+    'views/OfficePopup'
+], function ($, _, Backbone, JST, gmaps, MapcontrolView, SearchView, GeoPopup, OfficePopup) {
     'use strict';
 
     // as per http://stackoverflow.com/questions/7095574/google-maps-api-3-custom-marker-color-for-default-dot-marker/7686977#7686977
     var PinImage = function(color) {
         var pinColor = color || 'FE7569';
 
-        return new google.maps.MarkerImage("https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
-            new google.maps.Size(21, 34),
-            new google.maps.Point(0,0),
-            new google.maps.Point(10, 34));
-    }
-    var PinShadow = function(color) {
-        var pinColor = color || 'FE7569';
+        return new gmaps.MarkerImage('https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|' + pinColor,
+            new gmaps.Size(21, 34),
+            new gmaps.Point(0,0),
+            new gmaps.Point(10, 34));
+    };
+    /* in case you want a shadow later
+    var PinShadow = function() {
 
-        return new google.maps.MarkerImage("https://chart.apis.google.com/chart?chst=d_map_pin_shadow",
-            new google.maps.Size(40, 37),
-            new google.maps.Point(0, 0),
-            new google.maps.Point(12, 35));
-    }
+        return new gmaps.MarkerImage('https://chart.apis.google.com/chart?chst=d_map_pin_shadow',
+            new gmaps.Size(40, 37),
+            new gmaps.Point(0, 0),
+            new gmaps.Point(12, 35));
+    };
+    */
 
     var MapView = Backbone.View.extend({
 
-        el: $("#map")[0],
+        el: $('#map')[0],
 
-        $el: $("#map"),
+        $el: $('#map'),
 
         mapOptions: {
-            center: new google.maps.LatLng(53.7266683, -127.64762059999998),
+            center: new gmaps.LatLng(53.7266683, -127.64762059999998),
             zoom: 6,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            mapTypeId: gmaps.MapTypeId.ROADMAP,
             panControl: true,
             panControlOptions: {
-                position: google.maps.ControlPosition.RIGHT_CENTER
+                position: gmaps.ControlPosition.RIGHT_CENTER
             },
             zoomControl: true,
             zoomControlOptions: {
-                style: google.maps.ZoomControlStyle.LARGE,
-                position: google.maps.ControlPosition.RIGHT_CENTER
+                style: gmaps.ZoomControlStyle.LARGE,
+                position: gmaps.ControlPosition.RIGHT_CENTER
             }
         },
 
         controlTemplate: JST['app/scripts/templates/mapControl.ejs'],
 
-        infowindow: new google.maps.InfoWindow({
+        infowindow: new gmaps.InfoWindow({
             maxWidth: 300
         }),
 
-        initialize: function(options) {
-            var mapView = this;
-            _.bindAll(this, 'addMarker', 'centerMap', 'centerMapOnMarkers', 'mapGeolocations');
+        initialize: function() {
+            _.bindAll(this, 'addMarker', 'centerMap', 'centerMapOnMarkers', 'mapGeolocations', 'addListener');
 
-            this.map = new google.maps.Map(this.el, this.mapOptions);
-            this.infowindow = new google.maps.InfoWindow({
+            this.map = new gmaps.Map(this.el, this.mapOptions);
+            this.infowindow = new gmaps.InfoWindow({
                 maxWidth: 300
             });
 
@@ -73,22 +72,21 @@ define([
                 text: 'Home',
                 className: 'home'
             });
-            this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(homeMapControl.el);
-            google.maps.event.addDomListener(homeMapControl.el, 'click', this.centerMap);
+            this.map.controls[gmaps.ControlPosition.TOP_CENTER].push(homeMapControl.el);
+            gmaps.event.addDomListener(homeMapControl.el, 'click', this.centerMap);
         },
 
         addMarker: function(model, color) {
-            var mapView = this;
             var location = model.get('location');
             var opts = {
-                position: new google.maps.LatLng(location.lat, location.lng),
+                position: new gmaps.LatLng(location.lat, location.lng),
                 map: this.map,
                 model: model
             };
-            if(typeof color == 'string') {
+            if(typeof color === 'string') {
                 opts.icon = new PinImage(color);
-            };
-            var marker = new google.maps.Marker(opts);
+            }
+            var marker = new gmaps.Marker(opts);
 
             model.set('marker', marker);
 
@@ -135,12 +133,8 @@ define([
                     position: markers[0].getPosition(),
                     zoom: 15
                 });
-                console.log({
-                    position: markers[0].getPosition(),
-                    zoom: 15
-                })
             }else {
-                var bounds = new google.maps.LatLngBounds();
+                var bounds = new gmaps.LatLngBounds();
                 _.each(markers, function(marker) {
                     bounds.extend(marker.position);
                 });
@@ -150,6 +144,10 @@ define([
 
         focusMarker: function(model){
             new gmaps.event.trigger(model.get('marker'), 'click');
+        },
+
+        addListener: function(marker, type, callback) {
+            gmaps.event.addListener(marker, 'click', callback);
         }
     });
 

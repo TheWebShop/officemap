@@ -1,7 +1,8 @@
 /*global define*/
 
-define(['backbone'], function (Backbone) {
-    var vent = _.extend({}, Backbone.Events); 
+define(['underscore', 'backbone'], function (_, Backbone) {
+    'use strict';
+    var vent = _.extend({}, Backbone.Events);
 
     return vent;
 });
