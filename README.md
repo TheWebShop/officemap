@@ -23,9 +23,11 @@ Once you're satisfied with your changes you can stop the development server and 
 Deploying
 ---------
 
-1. `grunt build` to process the source files into an optimized distributabale form.
-2. Configure the project's Grutfile to map to the production server [location](https://github.com/TheWebShop/officemap/blob/master/Gruntfile.js#L26). By default, OSX will map the Loop to `/Volumes/theloop.gov.bc.ca`.
-3. `grunt copy:sp` to deploy to The Loop using the custom [copy](https://github.com/gruntjs/grunt-contrib-copy) task.
+ 1. `grunt build` to process the source files into an optimized distributabale form.
+ 2. Configure the project's Grutfile to map to the production server [location](https://github.com/TheWebShop/officemap/blob/master/Gruntfile.js#L26). By default, OSX will map the Loop to `/Volumes/theloop.gov.bc.ca`.
+ 3. `grunt copy:sp` to deploy to The Loop using the custom [copy](https://github.com/gruntjs/grunt-contrib-copy) task.
+
+    **Caution** this command will overwite files without warning, be very careful [where it is pointing](https://github.com/TheWebShop/officemap/blob/master/Gruntfile.js#L26).
 
 Grunt tasks
 -----------
@@ -38,7 +40,5 @@ Grunt tasks
 
  * `grunt copy:sp`
    Copies the contents of `dist/` to the production environment.
-
-   **Caution** this command will overwite files without warning, be very careful [where it is pointing](https://github.com/TheWebShop/officemap/blob/master/Gruntfile.js#L26).
 
 [^1]: [LiveReload](http://livereload.com/) has extensions for Chrome, Firefox and Safari.
