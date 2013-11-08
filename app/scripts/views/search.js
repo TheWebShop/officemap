@@ -43,9 +43,13 @@ define([
                 var Name = office.get('Name');
                 var Office = office.get('Office');
                 var Serving = office.get('Serving');
+                var RegionValue = office.get('RegionValue');
+                var ZipPostalCode = office.get('ZIPPostalCode');
+
+                console.log(ZipPostalCode);
 
                 return {
-                    value: Name + Office + Serving,
+                    value: Name + " " + Office + " " + Serving + " " + " Region " + RegionValue + " " + ZipPostalCode + " ",
                     Name: Name,
                     Office: Office,
                     Serving: Serving,
